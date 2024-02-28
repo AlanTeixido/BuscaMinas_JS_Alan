@@ -1,9 +1,16 @@
 /* Estilos para el tablero */
 #tablero {
+  width: 80vh; /* Ancho del tablero */
+  height: 80vh; /* Alto del tablero */
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 10px;
+  grid-template-columns: repeat(var(--columnas), minmax(30px, 1fr)); /* Utiliza una variable para el número de columnas */
+  grid-template-rows: repeat(var(--filas), minmax(30px, 1fr)); /* Utiliza una variable para el número de filas */
+  grid-gap: 5px;
+
   margin-top: 20px;
+  max-width: 90vw; /* Ancho máximo del tablero */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Estilos para las celdas */
@@ -11,9 +18,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 30px;
-  background-color: black;
-  border: 1px solid black;
-  cursor: pointer;
+  font-size: 16px; /* Tamaño de fuente ajustado */
+  background-color: #ddd; /* Color de fondo de las celdas */
+  border: 1px solid #999; /* Borde de las celdas */
+  cursor: pointer;  
 }
 
+.celda.mina {
+  background-color: #c0392b; /* Color de fondo para las minas */
+  color: #fff; /* Color de texto para las minas */
+}
