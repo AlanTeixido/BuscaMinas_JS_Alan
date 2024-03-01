@@ -44,10 +44,12 @@ img {
   cursor: pointer;  
 }
 
-/* .celda.mina {
-  background-color: #c0392b; 
-  color: #fff; 
+/* Descomentar para ver donde estan las minas */
+
+/* .celda.mina::after {
+  content: '💣'; 
 } */
+
 
 /* Estilos para los botones */
 
