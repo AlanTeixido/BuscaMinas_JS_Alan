@@ -4,13 +4,14 @@
 // Clase tablero
 class Tablero {
     constructor(filas, columnas, bombas) {
-        this.filas = filas; // Número de filas del tablero
-        this.columnas = columnas; // Número de columnas del tablero
-        this.bombas = bombas; // Número de bombas en el tablero
-        this.tablero = []; // Representación del tablero como una matriz
+        this.filas = filas;
+        this.columnas = columnas;
+        this.bombas = bombas;
+        this.tablero = [];
 
-        this.inicializarTablero(); // Inicializar el tablero con espacios en blanco
-        this.generarBombas(); // Generar bombas aleatorias en el tablero
+        this.inicializarTablero();
+        this.generarBombas();
+
     }
 
     // Inicializar el tablero con espacios en blanco y colocar las minas
@@ -48,32 +49,19 @@ class Tablero {
         }
         document.getElementById("tablero").innerHTML = html; // Mostrar el tablero en el HTML
     }
+
+
+
+
+
 }
-
-// Función de inicialización
-function init(){
-    const filas = 8;
-    const columnas = 8;
-    const bombas = 10; // Número de minas, ajusta según desees
-    
-    let tablero = new Tablero(filas, columnas, bombas);
-    tablero.mostrarTablero(); 
-
-    // Actualizar variables CSS para el número de filas y columnas
-    document.getElementById("tablero").style.setProperty('--filas', filas);
-    document.getElementById("tablero").style.setProperty('--columnas', columnas);
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    init(); 
-});
-
-
 
 
 // Classe casilla
 class Casilla {
     mostrarBanderas() {
+
+
 
     }
 
@@ -81,4 +69,47 @@ class Casilla {
 
     }
 }
+
+
+
+
+// Eventos de clic para cambiar el tamaño del tablero y el número de bombas
+document.addEventListener("DOMContentLoaded", function () {
+    // Inicializa el tablero con la configuración predeterminada
+    init(8, 8, 10); // Por ejemplo, un tablero predeterminado de 8x8 con 10 bombas
+
+    // Agrega eventos de clic a los botones para cambiar el tamaño del tablero y el número de bombas
+    document.getElementById("boton3x3").addEventListener("click", function () {
+        init(3, 3, 3); // Cambia el tablero a 3x3 con 3 bombas
+    });
+
+    document.getElementById("boton4x4").addEventListener("click", function () {
+        init(4, 4, 4); // Cambia el tablero a 4x4 con 4 bombas
+    });
+
+    document.getElementById("boton8x8").addEventListener("click", function () {
+        init(8, 8, 10); // Cambia el tablero a 8x8 con 10 bombas
+    });
+
+    document.getElementById("boton16x16").addEventListener("click", function () {
+        init(16, 16, 40); // Cambia el tablero a 16x16 con 40 bombas
+    });
+});
+
+// Función de inicialización que recibe el número de filas, columnas y bombas como argumentos
+function init(filas, columnas, bombas) {
+    let tablero = new Tablero(filas, columnas, bombas);
+    tablero.mostrarTablero();
+
+    // Actualiza variables CSS para el número de filas y columnas
+    document.getElementById("tablero").style.setProperty('--filas', filas);
+    document.getElementById("tablero").style.setProperty('--columnas', columnas);
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    init();
+});
+
+
 
