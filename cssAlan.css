@@ -1,14 +1,34 @@
+
+/* Estilos de background */
+body {
+  background-color: black; 
+  font-family: Arial, sans-serif; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Estilo del logo */
+img {
+  width: 50px; 
+  height: 50px; 
+  margin-top: 900px;
+}
+
+
 /* Estilos para el tablero */
 #tablero {
-  width: 80vh; /* Ancho del tablero */
-  height: 80vh; /* Alto del tablero */
+  width: 80vh; 
+  height: 80vh; 
   display: grid;
   grid-template-columns: repeat(var(--columnas), minmax(30px, 1fr)); /* Utiliza una variable para el número de columnas */
   grid-template-rows: repeat(var(--filas), minmax(30px, 1fr)); /* Utiliza una variable para el número de filas */
   grid-gap: 5px;
 
   margin-top: 20px;
-  max-width: 90vw; /* Ancho máximo del tablero */
+  max-width: 90vw; 
   margin-left: auto;
   margin-right: auto;
 }
@@ -18,13 +38,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 16px; /* Tamaño de fuente ajustado */
-  background-color: #ddd; /* Color de fondo de las celdas */
-  border: 1px solid #999; /* Borde de las celdas */
+  font-size: 16px; 
+  background-color: #ddd; 
+  border: 1px solid #999; 
   cursor: pointer;  
 }
 
-.celda.mina {
-  background-color: #c0392b; /* Color de fondo para las minas */
-  color: #fff; /* Color de texto para las minas */
+/* .celda.mina {
+  background-color: #c0392b; 
+  color: #fff; 
+} */
+
+/* Estilos para los botones */
+
+button {
+  padding: 10px; 
+  margin: 10px; 
+  font-size: 16px; 
+  cursor: pointer; 
+  background-color: white; 
+  border: none; 
+  color: black; 
+  border-radius: 5px; 
 }
