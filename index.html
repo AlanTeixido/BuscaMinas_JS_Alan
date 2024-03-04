@@ -8,11 +8,23 @@
     <link rel="icon" type="image/png" href="/UF3/Buscaminas_AlanTeixido/src/src/bomb-154456_1280.webp">
 </head>
 <body>
+
     <div id="tablero"></div>
 
     <script src="/UF3/Buscaminas_AlanTeixido/src/jsAlan.js"></script>
 
-
+    <article id="control">
+    <!-- Información para jugar -->
+        <div id="info">
+            <h1>Buscaminas</h1>
+            <p>El objetivo del juego es despejar un campo de minas sin detonar ninguna. </p> 
+            <p>Si haces clic en una mina, pierdes. Si haces clic en un número, te dice cuántas minas. </p>
+            <p>Si haces clic en una casilla vacía, se revelan todas las casillas adyacentes.</p>
+            <p id="bandera">Si marcas una mina con un banderín, haz click derecho →</p>
+            <p id="desmarcar">Para desmarcar una bandera haz doble click derecho → </p>
+        </div>
+    
+        
     <!-- boton para 3x3 -->
     <button id="boton3x3">3x3</button>
 
@@ -24,6 +36,14 @@
 
     <!-- boton para 16x16 -->
     <button id="boton16x16">16x16</button>
+
+    
+    <!-- boton de reinicio-->
+    <button id="botonReiniciar">Reiniciar</button>
+
+</article>
+
+
 
 
     <footer>
