@@ -8,6 +8,7 @@ body {
   align-items: center;
   height: 100vh;
   margin: 0;
+  color: white;
 }
 
 /* Estilo del logo */
@@ -51,6 +52,23 @@ img {
 } */
 
 
+/* Bloque article de #control */
+#control {
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  margin-top: 20px; 
+}
+
+/* <p> de bandera y desmarcar */
+#bandera{
+  color: red;
+}
+
+#desmarcar{
+  color: red;
+}
+
 /* Estilos para los botones */
 
 button {
@@ -62,4 +80,35 @@ button {
   border: none; 
   color: black; 
   border-radius: 5px; 
+}
+
+button:hover {
+  background-color: white; 
+}
+
+/* Boton de reiniciar */
+#botonReiniciar{
+  background-color: #FF0000;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px; 
+}
+
+/* Poner bandera si la classe es +bandera */
+.celda.bandera::after {
+  content: '🚩'; 
+  font-size: 30px;
+}
+/* Info de jugar encima de los botones */
+#info{
+  margin-bottom: 200px;
+  margin-right: -420px;
+  font-size: 15px;
+  color: white;
+  text-align: center;
+  line-height: 0.3;
 }
