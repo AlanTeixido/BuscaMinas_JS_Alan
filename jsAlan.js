@@ -63,9 +63,11 @@ class Casilla {
 
 
 
+
     }
 
     mostrarSolucion() {
+
 
     }
 }
@@ -75,8 +77,6 @@ class Casilla {
 
 // Eventos de clic para cambiar el tamaño del tablero y el número de bombas
 document.addEventListener("DOMContentLoaded", function () {
-    // Inicializa el tablero con la configuración predeterminada
-    init(8, 8, 10); // Por ejemplo, un tablero predeterminado de 8x8 con 10 bombas
 
     // Agrega eventos de clic a los botones para cambiar el tamaño del tablero y el número de bombas
     document.getElementById("boton3x3").addEventListener("click", function () {
@@ -94,6 +94,32 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("boton16x16").addEventListener("click", function () {
         init(16, 16, 40); // Cambia el tablero a 16x16 con 40 bombas
     });
+
+    //Evento de click para reiniciar el tablero
+    document.getElementById("botonReiniciar").addEventListener("click", function () {
+        location.reload();
+    });
+
+    // Evento de click derecho para marcar banderas
+    document.getElementById("tablero").addEventListener("contextmenu", function (event) {
+        event.preventDefault();
+        let celda = event.target;
+        celda.classList.toggle("bandera");
+    });
+
+    let lastClickTime = 0;
+    let lastClickedCell = null;
+
+    //Quitar la bandera con doble click derecho
+    document.getElementById("tablero").addEventListener("mousedown", function (event) {
+        let currentTime = new Date().getTime();
+        let clickTimeDiff = currentTime - lastClickTime;
+    });
+
+
+
+
+
 });
 
 // Función de inicialización que recibe el número de filas, columnas y bombas como argumentos
