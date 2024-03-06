@@ -52,6 +52,12 @@ img {
 } */
 
 
+/* Para las celdas vacias sin minas alrededores */
+.celda-vacia {
+  background-color: #aaa; 
+}
+
+
 /* Bloque article de #control */
 #control {
   display: flex; 
@@ -111,4 +117,5 @@ button:hover {
   color: white;
   text-align: center;
   line-height: 0.3;
-}
+} 
+
