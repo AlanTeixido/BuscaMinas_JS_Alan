@@ -45,6 +45,27 @@ class Tablero {
             this.tablero[fila][columna] = "*";
         }
     }
+    
+    //Mostrar las celdas sin minas alrededor automaticamente, se revelan los numeros al alrededor solamente
+    mostrarCeldasAgua() {
+        for (let i = 0; i < this.filas; i++) {
+            for (let j = 0; j < this.columnas; j++) {
+                if (this.tablero[i][j] === " ") {
+                    let minas = 0;
+                    for (let k = -1; k <= 1; k++) {
+                        for (let l = -1; l <= 1; l++) {
+                            if (i + k >= 0 && i + k < this.filas && j + l >= 0 && j + l < this.columnas) {
+                                if (this.tablero[i + k][j + l] === "*") {
+                                    minas++;
+                                }
+                            }
+                        }
+                    }
+                    this.tablero[i][j] = minas;
+                }
+            }
+        }
+    }
 }
 
 // Función para mostrar el tablero en el HTML
@@ -53,7 +74,7 @@ function mostrarTableroEnHTML(tablero) {
     document.getElementById("tablero").innerHTML = htmlTablero; // Mostrar el tablero en el HTML
 }
 
-/// Clase casilla
+// Clase casilla
 class Casilla {
     constructor(fila, columna, tablero) {
         this.fila = fila;
@@ -97,6 +118,41 @@ class Casilla {
 
 }
 
+// Función de inicialización que recibe el número de filas, columnas y bombas como argumentos
+function init(filas, columnas, bombas) {
+    tablero = new Tablero(filas, columnas, bombas); // Declara tablero como una variable global
+    tablero.mostrarCeldasAgua(); // Mostrar automáticamente las celdas "agua"
+    mostrarTableroEnHTML(tablero.tablero);
+    // Actualiza variables CSS para el número de filas y columnas
+    document.getElementById("tablero").style.setProperty('--filas', filas);
+    document.getElementById("tablero").style.setProperty('--columnas', columnas);
+
+    // Agregar evento de clic para cada celda del tablero después de mostrar el tablero en el HTML
+    document.querySelectorAll('.celda').forEach(celda => {
+        celda.addEventListener('click', function(event) {
+            let id = celda.id.split("-");
+            let fila = parseInt(id[1]);
+            let columna = parseInt(id[2]);
+            let casilla = new Casilla(fila, columna, tablero);
+            casilla.rellenarValor();
+            casilla.mostrarValor();
+
+            // Si la casilla es vacía, revelar las celdas vecinas automáticamente
+            if (casilla.valor === 0) {
+                for (let i = -1; i <= 1; i++) {
+                    for (let j = -1; j <= 1; j++) {
+                        if (fila + i >= 0 && fila + i < tablero.filas && columna + j >= 0 && columna + j < tablero.columnas) {
+                            let vecina = new Casilla(fila + i, columna + j, tablero);
+                            vecina.rellenarValor();
+                            vecina.mostrarValor();
+                        }
+                    }
+                }
+            }
+        });
+    });
+}
+
 // Eventos de clic para cambiar el tamaño del tablero y el número de bombas
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -129,20 +185,4 @@ document.addEventListener("DOMContentLoaded", function () {
         location.reload();
     });
 
-    // Variable para mantener el conteo de las celdas descubiertas
-    let celdasDescubiertas = 0;
-
-});
-
-// Función de inicialización que recibe el número de filas, columnas y bombas como argumentos
-function init(filas, columnas, bombas) {
-    tablero = new Tablero(filas, columnas, bombas); // Declara tablero como una variable global
-    mostrarTableroEnHTML(tablero.tablero);
-    // Actualiza variables CSS para el número de filas y columnas
-    document.getElementById("tablero").style.setProperty('--filas', filas);
-    document.getElementById("tablero").style.setProperty('--columnas', columnas);
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    init();
 });
