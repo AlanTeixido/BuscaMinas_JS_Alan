@@ -3,12 +3,33 @@ function generarHTMLTablero(tablero) {
     let html = ""; // Inicializar el HTML como una cadena vacía
     for (let i = 0; i < tablero.length; i++) {
         for (let j = 0; j < tablero[i].length; j++) {
-            const contenido = tablero[i][j] === "*" ? "" : tablero[i][j]; // Si la celda es una mina, no mostrar contenido
             const claseMina = tablero[i][j] === "*" ? "mina" : ""; // Si la celda es una mina, añadir la clase mina
-            html += `<div class="celda ${claseMina}" id="celda-${i}-${j}">${contenido}</div>`; // Añadir la celda al HTML
+            html += `<div class="celda ${claseMina}" id="celda-${i}-${j}"></div>`; // Añadir la celda al HTML sin contenido inicial
         }
     }
     return html;
+}
+
+
+function mostrarTableroEnHTML(tablero) {
+    const htmlTablero = generarHTMLTablero(tablero);
+    document.getElementById("tablero").innerHTML = htmlTablero; // Mostrar el tablero en el HTML
+    mostrarCeldasVacias(); // Mostrar automáticamente las celdas vacías
+}
+
+// Función para mostrar automáticamente las celdas vacías
+function mostrarCeldasVacias() {
+    document.querySelectorAll('.celda').forEach(celda => {
+        const id = celda.id.split("-");
+        const fila = parseInt(id[1]);
+        const columna = parseInt(id[2]);
+        const valor = tablero.tablero[fila][columna];
+        if (valor === 0) { // Si el valor de la celda es 0, mostrar el valor de la celda
+            const casilla = new Casilla(fila, columna, tablero);
+            casilla.mostrarValor();
+            celda.classList.add("celda-cero"); // Agrega la clase para los ceros
+        }
+    });
 }
 
 // Clase tablero
@@ -21,6 +42,7 @@ class Tablero {
 
         this.inicializarTablero();
         this.generarBombas();
+        this.mostrarCeldasAgua(); // Mostrar automáticamente las celdas "agua"
     }
 
     // Inicializar el tablero con espacios en blanco y colocar las minas
@@ -45,7 +67,7 @@ class Tablero {
             this.tablero[fila][columna] = "*";
         }
     }
-    
+
     //Mostrar las celdas sin minas alrededor automaticamente, se revelan los numeros al alrededor solamente
     mostrarCeldasAgua() {
         for (let i = 0; i < this.filas; i++) {
@@ -66,12 +88,6 @@ class Tablero {
             }
         }
     }
-}
-
-// Función para mostrar el tablero en el HTML
-function mostrarTableroEnHTML(tablero) {
-    const htmlTablero = generarHTMLTablero(tablero);
-    document.getElementById("tablero").innerHTML = htmlTablero; // Mostrar el tablero en el HTML
 }
 
 // Clase casilla
@@ -100,7 +116,7 @@ class Casilla {
         }
     }
 
-    // Muestra el valor de la casilla en el HTML
+    // Función para mostrar el valor de la casilla en el HTML
     mostrarValor() {
         let celda = document.getElementById(`celda-${this.fila}-${this.columna}`);
         celda.classList.add("clicado");
@@ -108,11 +124,41 @@ class Casilla {
         // Verificar si la casilla es una mina
         if (this.valor === "*") {
             celda.classList.add("mina");
-        } else if (this.valor > 0) {
-            celda.textContent = this.valor;
         } else {
-            // Si la casilla no tiene minas alrededor, mostrarla con otro color
-            celda.classList.add("celda-vacia");
+            // Mostrar el valor numérico en la celda
+            celda.textContent = this.valor;
+            // Aplicar clases de color dependiendo del valor
+            switch (this.valor) {
+                case 0:
+                    celda.classList.add("celda-cero");
+                    break;
+                case 1:
+                    celda.classList.add("celda-uno");
+                    break;
+                case 2:
+                    celda.classList.add("celda-dos");
+                    break;
+                case 3:
+                    celda.classList.add("celda-tres");
+                    break;
+                case 4:
+                    celda.classList.add("celda-cuatro");
+                    break;
+                case 5:
+                    celda.classList.add("celda-cinco");
+                    break;
+                case 6:
+                    celda.classList.add("celda-seis");
+                    break;
+                case 7:
+                    celda.classList.add("celda-siete");
+                    break;
+                case 8:
+                    celda.classList.add("celda-ocho");
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -121,34 +167,20 @@ class Casilla {
 // Función de inicialización que recibe el número de filas, columnas y bombas como argumentos
 function init(filas, columnas, bombas) {
     tablero = new Tablero(filas, columnas, bombas); // Declara tablero como una variable global
-    tablero.mostrarCeldasAgua(); // Mostrar automáticamente las celdas "agua"
-    mostrarTableroEnHTML(tablero.tablero);
+    mostrarTableroEnHTML(tablero.tablero); // Mostrar el tablero en el HTML
     // Actualiza variables CSS para el número de filas y columnas
     document.getElementById("tablero").style.setProperty('--filas', filas);
     document.getElementById("tablero").style.setProperty('--columnas', columnas);
 
     // Agregar evento de clic para cada celda del tablero después de mostrar el tablero en el HTML
     document.querySelectorAll('.celda').forEach(celda => {
-        celda.addEventListener('click', function(event) {
+        celda.addEventListener('click', function (event) {
             let id = celda.id.split("-");
             let fila = parseInt(id[1]);
             let columna = parseInt(id[2]);
             let casilla = new Casilla(fila, columna, tablero);
             casilla.rellenarValor();
             casilla.mostrarValor();
-
-            // Si la casilla es vacía, revelar las celdas vecinas automáticamente
-            if (casilla.valor === 0) {
-                for (let i = -1; i <= 1; i++) {
-                    for (let j = -1; j <= 1; j++) {
-                        if (fila + i >= 0 && fila + i < tablero.filas && columna + j >= 0 && columna + j < tablero.columnas) {
-                            let vecina = new Casilla(fila + i, columna + j, tablero);
-                            vecina.rellenarValor();
-                            vecina.mostrarValor();
-                        }
-                    }
-                }
-            }
         });
     });
 }
