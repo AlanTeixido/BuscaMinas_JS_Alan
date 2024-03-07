@@ -40,8 +40,9 @@ img {
   justify-content: center;
   align-items: center;
   font-size: 16px; 
-  background-color: #ddd; 
+  background-color: #ffffff; 
   border: 1px solid #999; 
+  color: black;
   cursor: pointer;  
 }
 
@@ -50,12 +51,6 @@ img {
 /* .celda.mina::after {
   content: '💣'; 
 } */
-
-
-/* Para las celdas vacias sin minas alrededores */
-.celda-vacia {
-  background-color: #aaa; 
-}
 
 
 /* Bloque article de #control */
@@ -109,6 +104,7 @@ button:hover {
   content: '🚩'; 
   font-size: 30px;
 }
+
 /* Info de jugar encima de los botones */
 #info{
   margin-bottom: 200px;
@@ -118,4 +114,58 @@ button:hover {
   text-align: center;
   line-height: 0.3;
 } 
+
+/* Estilo para los ceros */
+.celda-cero {
+  background-color: rgb(56, 54, 54); 
+  color: white; 
+}
+
+/* Estilo para los unos */
+.celda-uno {
+  background-color: rgb(33, 141, 23); 
+  color: white; 
+}
+
+/* Estilo para los dos */
+.celda-dos {
+  background-color: rgb(138, 145, 113); 
+  color: white; 
+}
+
+/* Estilo para los tres */
+.celda-tres {
+  background-color: rgb(221, 117, 20); 
+  color: white; 
+}
+
+/* Estilo para los cuatro */
+.celda-cuatro {
+  background-color: rgb(192, 39, 72); 
+  color: white; 
+}
+
+/* Estilo para los cinco */
+.celda-cinco {
+  background-color: rgb(56, 54, 54); 
+  color: white; 
+}
+
+/* Estilo para los seis */  
+.celda-seis {
+  background-color: rgb(56, 54, 54); 
+  color: white; 
+}
+
+/* Estilo para los siete */
+.celda-siete {
+  background-color: rgb(56, 54, 54); 
+  color: white; 
+}
+
+/* Estilo para los ocho */
+.celda-ocho {
+  background-color: rgb(56, 54, 54); 
+  color: white; 
+}
 
