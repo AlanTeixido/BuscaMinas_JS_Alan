@@ -185,7 +185,7 @@ class Casilla {
     }
 }
 
-// Función para mostrar el mensaje
+// Función para mostrar el mensaje 
 function mostrarMensaje(mensaje) {
     const mensajeDiv = document.getElementById("mensaje");
     mensajeDiv.textContent = mensaje;
@@ -220,7 +220,6 @@ function init(filas, columnas, bombas) {
 
             // Verificar si la casilla es una mina
             if (casilla.valor === "*") {
-                // Mostrar mensaje de derrota por html
                 mostrarMensaje("¡Has perdido! Haz clic en 'Reiniciar' para jugar de nuevo.");
 
 
@@ -230,7 +229,6 @@ function init(filas, columnas, bombas) {
                 let celdasRestantes = filas * columnas - bombas - document.querySelectorAll('.celda-cero').length;
                 let celdasClicadas = document.querySelectorAll('.clicado').length;
                 if (celdasClicadas === celdasRestantes) {
-                    // Mostrar mensaje de victoria por html
                     mostrarMensaje("¡Has ganado! Haz clic en 'Reiniciar' para jugar de nuevo.");
 
                 }
