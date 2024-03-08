@@ -15,7 +15,7 @@ body {
 img {
   width: 50px; 
   height: 50px; 
-  margin-top: 900px;
+  margin-top: 800px;
 }
 
 
@@ -24,8 +24,8 @@ img {
   width: 80vh; 
   height: 80vh; 
   display: grid;
-  grid-template-columns: repeat(var(--columnas), minmax(30px, 1fr)); /* Utiliza una variable para el número de columnas */
-  grid-template-rows: repeat(var(--filas), minmax(30px, 1fr)); /* Utiliza una variable para el número de filas */
+  grid-template-columns: repeat(var(--columnas), minmax(30px, 1fr));
+  grid-template-rows: repeat(var(--filas), minmax(30px, 1fr)); 
   grid-gap: 5px;
 
   margin-top: 20px;
@@ -169,3 +169,17 @@ button:hover {
   color: white; 
 }
 
+
+/* Estilo para el mensaje */
+#mensaje {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  padding: 60px; 
+  border: 2px solid black;
+  z-index: 9999;
+}
