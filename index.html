@@ -1,59 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BUSCAMINAS ALAN</title>
-    <link rel="stylesheet" href="/UF3/Buscaminas_AlanTeixido/src/cssAlan.css">
-    <link rel="icon" type="image/png" href="/UF3/Buscaminas_AlanTeixido/src/src/bomb-154456_1280.webp">
-</head>
-<body>
-
+    <link rel="stylesheet" href="/UF3/Buscaminas_AlanTeixido/src/cssAlan.css" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/UF3/Buscaminas_AlanTeixido/src/src/bomb-154456_1280.webp"
+    />
+  </head>
+  <body>
     <div id="tablero"></div>
 
-    <script src="/UF3/Buscaminas_AlanTeixido/src/jsAlan.js"></script>
-
-    <article id="control">
-    <!-- Información para jugar -->
+    <section id="control">
+      <article id="control">
+        <!-- Información para jugar -->
         <div id="info">
-            <h1>Buscaminas</h1>
-            <p>El objetivo del juego es despejar un campo de minas sin detonar ninguna. </p> 
-            <p>Si haces clic en una mina, pierdes. Si haces clic en un número, te dice cuántas minas. </p>
-            <p>Si haces clic en una casilla vacía, se revelan todas las casillas adyacentes.</p>
-            <p id="bandera">Si marcas una mina con un banderín, haz click derecho →</p>
-            <p id="desmarcar">Para desmarcar una bandera haz click derecho otravez → </p>
-            <p id="desmarcar"> Para mostrar el numero de la casilla haz click izquierdo ← </p>
+          <h1>Buscaminas</h1>
+          <p>
+            El objetivo del juego es despejar un campo de minas sin detonar
+            ninguna.
+          </p>
+          <p>
+            Si haces clic en una mina, pierdes. Si haces clic en un número, te
+            dice cuántas minas.
+          </p>
+          <p>
+            Si haces clic en una casilla vacía, se revelan todas las casillas
+            adyacentes.
+          </p>
+          <p id="bandera">
+            Si marcas una mina con un banderín, haz click derecho →
+          </p>
+          <p id="desmarcar">
+            Para desmarcar una bandera haz click derecho otravez →
+          </p>
+          <p id="desmarcar">
+            Para mostrar el numero de la casilla haz click izquierdo ←
+          </p>
         </div>
-        
-    <!-- boton para 3x3 -->
-    <button id="boton3x3">3x3</button>
+      </article>
 
-    <!-- boton para 4x4 -->
-    <button id="boton4x4">4x4</button>
+      <!-- Botones para el juego -->
+      <button id="boton3x3">3x3</button>
+      <button id="boton4x4">4x4</button>
+      <button id="boton8x8">8x8</button>
+      <button id="boton16x16">16x16</button>
 
-    <!-- boton para 8x8 -->
-    <button id="boton8x8">8x8</button>
+      <!-- Botón de reinicio -->
+      <button id="botonReiniciar">Reiniciar</button>
 
-    <!-- boton para 16x16 -->
-    <button id="boton16x16">16x16</button>
+      <!-- Mensaje de victoria o derrota -->
+      <div id="mensaje"></div>
 
-    
-    <!-- boton de reinicio-->
-    <button id="botonReiniciar">Reiniciar</button>
-
-    <!-- mensaje de victoria o derrota-->
-    <div id="mensaje"></div>
-
-
-</article>
-
-
-
+  
+      <!-- Botón para mostrar el formulario -->
+      <button id="mostrarFormulario">Mostrar Formulario</button>
+    </section>
 
     <footer>
-        <img type="image/png" src="/UF3/Buscaminas_AlanTeixido/src/src/logoATrodo.png" alt="logo" id="logo">
+      <img
+        type="image/png"
+        src="/UF3/Buscaminas_AlanTeixido/src/src/logoATrodo.png"
+        alt="logo"
+        id="logo"
+      />
     </footer>
 
-    
-</body>
+    <script src="/UF3/Buscaminas_AlanTeixido/src/jsAlan.js"></script>
+      
+    <script src="/UF3/Buscaminas_AlanTeixido/src/jsFormulario.js"></script>
+
+  </body>
 </html>
