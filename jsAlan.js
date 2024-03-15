@@ -13,20 +13,32 @@ function generarHTMLTablero(tablero) {
 // Función para mostrar el tablero en el HTML
 function mostrarTableroEnHTML(tablero) {
     const htmlTablero = generarHTMLTablero(tablero);
-    document.getElementById("tablero").innerHTML = htmlTablero; // Mostrar el tablero en el HTML
-    // La función mostrarCeldasVacias ahora se llama después de generar el tablero en el HTML
-}
+    document.getElementById("tablero").innerHTML = htmlTablero;
 
-// Función para mostrar automáticamente las celdas vacías
-function mostrarCeldasVacias(tablero) {
-    for (let i = 0; i < tablero.filas; i++) {
-        for (let j = 0; j < tablero.columnas; j++) {
-            const valor = tablero.tablero[i][j];
-            if (valor === 0) {
-                mostrarCeldasAdyacentes(tablero, i, j); //usando la función recursiva
+    // Agregar evento de clic para cada celda del tablero después de mostrar el tablero en el HTML
+    document.querySelectorAll('.celda').forEach(celda => {
+        celda.addEventListener('click', function (event) {
+            let id = celda.id.split("-");
+            let fila = parseInt(id[1]);
+            let columna = parseInt(id[2]);
+            let casilla = new Casilla(fila, columna, tablero);
+            casilla.rellenarValor();
+            casilla.mostrarValor();
+
+            // Verificar si la casilla es una mina
+            if (casilla.valor === "*") {
+                mostrarMensaje("¡Has perdido! Haz clic en 'Reiniciar' para jugar de nuevo.");
+                event.stopPropagation();
+            } else {
+                // Verificar si el jugador ha ganado sin contar las celdas 0 o agua
+                let celdasRestantes = tablero.filas * tablero.columnas - tablero.bombas - document.querySelectorAll('.celda-cero').length;
+                let celdasClicadas = document.querySelectorAll('.clicado').length;
+                if (celdasClicadas === celdasRestantes) {
+                    mostrarMensaje("¡Has ganado! Haz clic en 'Reiniciar' para jugar de nuevo.");
+                }
             }
-        }
-    }
+        });
+    });
 }
 
 // Función recursiva para mostrar las celdas adyacentes a una celda vacía
@@ -43,18 +55,39 @@ function mostrarCeldasAdyacentes(tablero, fila, columna) {
 
     const valor = tablero.tablero[fila][columna];
     if (valor !== 0) {
-        return; // Salir si la celda no es vacía
+        // Mostrar el número en la celda vacía y marcarla como visitada
+        celda.textContent = valor === -1 ? "" : valor; // No mostrar -1, dejar la celda vacía en su lugar
+        celda.classList.add("clicado");
+        return; // Salir si el valor no es cero
     }
 
     // Mostrar la celda vacía y marcarla como visitada
     celda.classList.add("celda-cero");
     tablero.tablero[fila][columna] = -1;
 
-    // Mostrar las celdas adyacentes recursivamente
-    mostrarCeldasAdyacentes(tablero, fila - 1, columna); // Arriba
-    mostrarCeldasAdyacentes(tablero, fila + 1, columna); // Abajo
-    mostrarCeldasAdyacentes(tablero, fila, columna - 1); // Izquierda
-    mostrarCeldasAdyacentes(tablero, fila, columna + 1); // Derecha
+    // Mostrar las celdas adyacentes
+    mostrarCeldasAdyacentes(tablero, fila - 1, columna - 1);
+    mostrarCeldasAdyacentes(tablero, fila - 1, columna);
+    mostrarCeldasAdyacentes(tablero, fila - 1, columna + 1);
+    mostrarCeldasAdyacentes(tablero, fila, columna - 1);
+    mostrarCeldasAdyacentes(tablero, fila, columna + 1);
+    mostrarCeldasAdyacentes(tablero, fila + 1, columna - 1);
+    mostrarCeldasAdyacentes(tablero, fila + 1, columna);
+    mostrarCeldasAdyacentes(tablero, fila + 1, columna + 1);
+}
+
+// Función para mostrar automáticamente las celdas vacías
+function mostrarCeldasVacias(tablero) {
+    for (let i = 0; i < tablero.filas; i++) {
+        for (let j = 0; j < tablero.columnas; j++) {
+            const valor = tablero.tablero[i][j];
+            if (valor === 0) {
+                mostrarCeldasAdyacentes(tablero, i, j);
+            }
+        }
+    }
+    // Después de mostrar todas las celdas vacías, aplicar estilos a los números en las celdas
+    aplicarEstilosNumeros();
 }
 
 // Clase Tablero
@@ -67,7 +100,7 @@ class Tablero {
 
         this.inicializarTablero();
         this.generarBombas();
-        this.mostrarCeldasAgua(); // Mostrar automáticamente las celdas "agua"
+        this.mostrarCeldasAgua();
     }
 
     // Inicializar el tablero con espacios en blanco y colocar las minas
@@ -93,7 +126,7 @@ class Tablero {
         }
     }
 
-    //Mostrar las celdas sin minas alrededor automáticamente, se revelan los números alrededor solamente
+    // Mostrar las celdas sin minas alrededor automáticamente, se revelan los números alrededor solamente
     mostrarCeldasAgua() {
         for (let i = 0; i < this.filas; i++) {
             for (let j = 0; j < this.columnas; j++) {
@@ -141,7 +174,7 @@ class Casilla {
         }
     }
 
-    // Función para mostrar el valor de la casilla en el HTML
+    // Función para mostrar el valor de la casilla en el HTML de los elementos que estamos clicando
     mostrarValor() {
         let celda = document.getElementById(`celda-${this.fila}-${this.columna}`);
         celda.classList.add("clicado");
@@ -185,6 +218,48 @@ class Casilla {
     }
 }
 
+// Función para mostrar el valor de la casilla en el HTML de los elementos por defecto
+function aplicarEstilosNumeros() {
+    // Obtener todas las celdas del tablero
+    const celdas = document.querySelectorAll('.celda');
+
+    // Iterar sobre cada celda
+    celdas.forEach(celda => {
+        // Obtener el contenido de la celda
+        const contenido = celda.textContent.trim();
+
+        // Aplicar estilos según el contenido
+        switch (contenido) {
+            case '1':
+                celda.classList.add('celda-uno');
+                break;
+            case '2':
+                celda.classList.add('celda-dos');
+                break;
+            case '3':
+                celda.classList.add('celda-tres');
+                break;
+            case '4':
+                celda.classList.add('celda-cuatro');
+                break;
+            case '5':
+                celda.classList.add('celda-cinco');
+                break;
+            case '6':
+                celda.classList.add('celda-seis');
+                break;
+            case '7':
+                celda.classList.add('celda-siete');
+                break;
+            case '8':
+                celda.classList.add('celda-ocho');
+                break;
+            default:
+                break;
+        }
+    });
+}
+
 // Función para mostrar el mensaje 
 function mostrarMensaje(mensaje) {
     const mensajeDiv = document.getElementById("mensaje");
@@ -218,11 +293,8 @@ function init(filas, columnas, bombas) {
             casilla.rellenarValor();
             casilla.mostrarValor();
 
-            // Verificar si la casilla es una mina
             if (casilla.valor === "*") {
                 mostrarMensaje("¡Has perdido! Haz clic en 'Reiniciar' para jugar de nuevo.");
-
-
                 event.stopPropagation();
             } else {
                 // Verificar si el jugador ha ganado sin contar las celdas 0 o agua
@@ -230,9 +302,9 @@ function init(filas, columnas, bombas) {
                 let celdasClicadas = document.querySelectorAll('.clicado').length;
                 if (celdasClicadas === celdasRestantes) {
                     mostrarMensaje("¡Has ganado! Haz clic en 'Reiniciar' para jugar de nuevo.");
-
                 }
             }
+
         });
     });
 }
@@ -270,3 +342,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+// Funcion para abrir el formulario
+document.getElementById("mostrarFormulario").addEventListener("click", function () {
+    window.open("formulario.html", "popupFormulario", "width=1000,height=800");
+});
+
+
+
+
+
