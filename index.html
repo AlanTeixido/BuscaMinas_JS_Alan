@@ -1,77 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BUSCAMINAS ALAN</title>
-    <link rel="stylesheet" href="/UF3/Buscaminas_AlanTeixido/src/cssAlan.css" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="/UF3/Buscaminas_AlanTeixido/src/src/bomb-154456_1280.webp"
-    />
-  </head>
-  <body>
-    <div id="tablero"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Minesweeper | Alan Teixidó</title>
+  <meta name="description" content="Play Minesweeper online — dark premium edition by Alan Teixidó. Easy, Medium, Hard and Custom modes, leaderboard, and smooth animations." />
+  <meta property="og:title" content="Minesweeper | Alan Teixidó" />
+  <meta property="og:description" content="Premium dark Minesweeper with neon visuals, leaderboard and smooth animations." />
+  <meta property="og:image" content="https://alanteixido.dev/og-minesweeper.png" />
+  <meta property="og:type" content="website" />
+  <link rel="canonical" href="https://alanteixido.dev/minesweeper" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Confetti canvas (pointer-events: none) -->
+  <canvas id="confetti-canvas"></canvas>
 
-    <section id="control">
-      <article id="control">
-        <!-- Información para jugar -->
-        <div id="info">
-          <h1>Buscaminas</h1>
-          <p>
-            El objetivo del juego es despejar un campo de minas sin detonar
-            ninguna.
-          </p>
-          <p>
-            Si haces clic en una mina, pierdes. Si haces clic en un número, te
-            dice cuántas minas.
-          </p>
-          <p>
-            Si haces clic en una casilla vacía, se revelan todas las casillas
-            adyacentes.
-          </p>
-          <p id="bandera">
-            Si marcas una mina con un banderín, haz click derecho →
-          </p>
-          <p id="desmarcar">
-            Para desmarcar una bandera haz click derecho otravez →
-          </p>
-          <p id="desmarcar">
-            Para mostrar el numero de la casilla haz click izquierdo ←
-          </p>
+  <!-- Dot background -->
+  <div class="bg-pattern"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="13" r="7" fill="#ff3366" opacity="0.25"/>
+          <circle cx="12" cy="13" r="5" fill="#ff3366" opacity="0.6"/>
+          <circle cx="12" cy="13" r="3.5" fill="#ff3366"/>
+          <line x1="12" y1="6" x2="12" y2="4" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+          <line x1="5" y1="13" x2="3" y2="13" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+          <line x1="19" y1="13" x2="21" y2="13" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+          <line x1="7.05" y1="8.05" x2="5.63" y2="6.63" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+          <line x1="16.95" y1="8.05" x2="18.37" y2="6.63" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12.5" cy="5.5" r="1.2" fill="#ffaa00"/>
+          <line x1="10.5" y1="10" x2="13.5" y2="13" stroke="rgba(255,255,255,0.6)" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+        <span>Minesweeper</span>
+      </div>
+
+      <div class="hud">
+        <!-- Mine counter -->
+        <div class="hud-item" title="Mines remaining">
+          <svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="10" r="5.5" fill="#ff3366" opacity="0.3"/>
+            <circle cx="9" cy="10" r="3.8" fill="#ff3366"/>
+            <line x1="9" y1="4.5" x2="9" y2="2.5" stroke="#ff3366" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="3" y1="10" x2="1" y2="10" stroke="#ff3366" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="10" x2="17" y2="10" stroke="#ff3366" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="4.64" y1="5.64" x2="3.22" y2="4.22" stroke="#ff3366" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="13.36" y1="5.64" x2="14.78" y2="4.22" stroke="#ff3366" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="9.8" cy="4" r="0.9" fill="#ffaa00"/>
+          </svg>
+          <span id="mines-left" class="hud-value">000</span>
         </div>
-      </article>
 
-      <!-- Botones para el juego -->
-      <button id="boton3x3">3x3</button>
-      <button id="boton4x4">4x4</button>
-      <button id="boton8x8">8x8</button>
-      <button id="boton16x16">16x16</button>
+        <!-- Restart button -->
+        <button id="restart-btn" class="restart-btn" title="New Game">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z" fill="currentColor"/></svg>
+        </button>
 
-      <!-- Botón de reinicio -->
-      <button id="botonReiniciar">Reiniciar</button>
+        <!-- Timer -->
+        <div class="hud-item" title="Time elapsed">
+          <svg viewBox="0 0 18 18" fill="none">
+            <circle cx="9" cy="10" r="6.5" stroke="#00bfff" stroke-width="1.4" fill="none"/>
+            <line x1="9" y1="6.5" x2="9" y2="10" stroke="#00bfff" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="9" y1="10" x2="12" y2="12" stroke="#00bfff" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="7" y1="2" x2="11" y2="2" stroke="#00bfff" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <span id="timer" class="hud-value">000</span>
+        </div>
 
-      <!-- Mensaje de victoria o derrota -->
-      <div id="mensaje"></div>
+        <!-- Best time -->
+        <div class="hud-item hud-best" title="Best time">
+          <svg viewBox="0 0 18 18" fill="none"><path d="M9 2l1.76 3.57L15 6.27l-3 2.93.71 4.14L9 11.27l-3.71 2.07.71-4.14L3 6.27l4.24-.7L9 2z" fill="#ffd700" opacity="0.85"/></svg>
+          <span id="best-time" class="hud-value">---</span>
+        </div>
 
-  
-      <!-- Botón para mostrar el formulario -->
-      <button id="mostrarFormulario">Mostrar Formulario</button>
-    </section>
+        <!-- Mute -->
+        <button id="mute-btn" class="icon-btn" title="Toggle sound">
+          <svg id="sound-on-icon" viewBox="0 0 24 24" fill="none"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" fill="currentColor"/></svg>
+          <svg id="sound-off-icon" viewBox="0 0 24 24" fill="none" class="hidden"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
 
-    <footer>
-      <img
-        type="image/png"
-        src="/UF3/Buscaminas_AlanTeixido/src/src/logoATrodo.png"
-        alt="logo"
-        id="logo"
-      />
-    </footer>
+  <!-- ===== DIFFICULTY BAR ===== -->
+  <nav class="difficulty-bar">
+    <button class="diff-btn active" data-diff="easy">Easy <small>9×9 · 10</small></button>
+    <button class="diff-btn" data-diff="medium">Medium <small>16×16 · 40</small></button>
+    <button class="diff-btn" data-diff="hard">Hard <small>30×16 · 99</small></button>
+    <button class="diff-btn" data-diff="custom">Custom</button>
+  </nav>
 
-    <script src="/UF3/Buscaminas_AlanTeixido/src/jsAlan.js"></script>
-      
-    <script src="/UF3/Buscaminas_AlanTeixido/src/jsFormulario.js"></script>
+  <!-- Custom panel -->
+  <div id="custom-panel" class="custom-panel hidden">
+    <label>Rows <input type="number" id="custom-rows" min="5" max="30" value="10" /></label>
+    <label>Cols <input type="number" id="custom-cols" min="5" max="30" value="10" /></label>
+    <label>Mines <input type="number" id="custom-mines" min="1" max="200" value="15" /></label>
+    <button id="custom-apply" class="btn-accent">Apply</button>
+  </div>
 
-  </body>
+  <!-- ===== BOARD ===== -->
+  <main class="main">
+    <div id="board-wrapper">
+      <div id="tablero"></div>
+    </div>
+  </main>
+
+  <!-- ===== WIN / LOSE OVERLAY ===== -->
+  <div id="overlay" class="overlay hidden">
+    <div id="overlay-content" class="overlay-content">
+      <div id="overlay-icon" class="overlay-icon"></div>
+      <h2 id="overlay-title"></h2>
+      <p id="overlay-message"></p>
+      <p id="overlay-time" class="overlay-time hidden"></p>
+      <div id="new-record-badge" class="new-record hidden">🏆 New Best Time!</div>
+      <button id="overlay-play-again" class="btn-primary">Play Again</button>
+    </div>
+  </div>
+
+  <!-- ===== REGISTRATION MODAL ===== -->
+  <div id="reg-modal" class="modal hidden">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close">&times;</button>
+      <h2>Register Your Score</h2>
+      <p class="modal-subtitle">Save your time to the leaderboard</p>
+      <form id="reg-form" novalidate>
+        <div class="form-group">
+          <label for="reg-name">Name</label>
+          <input type="text" id="reg-name" placeholder="Your name" autocomplete="name" />
+          <span class="form-error" id="reg-name-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" placeholder="your@email.com" autocomplete="email" />
+          <span class="form-error" id="reg-email-err"></span>
+        </div>
+        <div class="form-group">
+          <label for="reg-age">Age</label>
+          <input type="number" id="reg-age" placeholder="Must be 18+" min="1" max="120" />
+          <span class="form-error" id="reg-age-err"></span>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Save Score</button>
+          <button type="button" id="skip-reg" class="btn-ghost">Skip</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== LEADERBOARD ===== -->
+  <section class="leaderboard">
+    <div class="leaderboard-inner">
+      <h3>Leaderboard</h3>
+      <div class="lb-tabs">
+        <button class="lb-tab active" data-tab="easy">Easy</button>
+        <button class="lb-tab" data-tab="medium">Medium</button>
+        <button class="lb-tab" data-tab="hard">Hard</button>
+      </div>
+      <ol id="lb-list" class="lb-list"></ol>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>Built by <a href="https://alanteixido.dev/" target="_blank" rel="noopener noreferrer">Alan Teixidó</a> · 2025</p>
+  </footer>
+
+  <script src="sounds.js"></script>
+  <script src="game.js"></script>
+</body>
 </html>

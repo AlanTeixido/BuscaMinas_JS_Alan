@@ -1,33 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Contacto</title>
-    <link rel="stylesheet" href="/UF3/Buscaminas_AlanTeixido/src/cssFormulario.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register | Minesweeper · Alan Teixidó</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="cssFormulario.css" />
 </head>
 <body>
-    
-<!-- Estilos para el formulario -->
+  <div class="bg-pattern"></div>
 
-    <div class="container">
-        <form id="formulario">
-            <h1>Formulario de Contacto</h1>
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="edad">Edad:</label>
-            <input type="number" id="edad" name="edad" required>           
-            <input type="submit" value="Enviar">
-        </form>
+  <div class="page-wrap">
+    <div class="card">
+      <div class="card-header">
+        <svg class="logo-icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="13" r="7" fill="#ff3366" opacity="0.25"/>
+          <circle cx="12" cy="13" r="4" fill="#ff3366"/>
+          <line x1="12" y1="6" x2="12" y2="4" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12.5" cy="5.5" r="1.2" fill="#ffaa00"/>
+        </svg>
+        <h1>Player Registration</h1>
+        <p>Create your profile to track scores</p>
+      </div>
+
+      <form id="formulario" novalidate>
+        <div class="form-group">
+          <label for="nombre">Name</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Your name" required minlength="2" maxlength="30" autocomplete="name" />
+          <span class="form-error" id="nombreError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="your@email.com" required autocomplete="email" />
+          <span class="form-error" id="emailError"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="edad">Age</label>
+          <input type="number" id="edad" name="edad" placeholder="Must be 18+" required min="18" max="120" />
+          <span class="form-error" id="edadError"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">Register</button>
+
+        <div id="success-msg" class="success-msg hidden">
+          ✓ Registration successful! You can close this window.
+        </div>
+      </form>
     </div>
 
-<script src="/UF3/Buscaminas_AlanTeixido/src/jsFormulario.js">
+    <footer>
+      <p>Built by <a href="https://alanteixido.dev/" target="_blank" rel="noopener">Alan Teixidó</a> · 2025</p>
+    </footer>
+  </div>
 
-
-
-</script>
-    
+  <script src="jsFormulario.js"></script>
 </body>
 </html>
